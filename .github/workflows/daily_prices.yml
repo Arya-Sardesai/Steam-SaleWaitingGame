@@ -1,0 +1,44 @@
+name: Daily price snapshot
+
+on:
+  schedule:
+    # 18:30 UTC = 10:30am Vancouver (PST), just after Steam sales usually flip at 10am Pacific.
+    # In summer (PDT) this becomes 11:30am, which is still fine.
+    - cron: "30 18 * * *"
+  workflow_dispatch:        # "Run workflow" button for manual runs
+
+concurrency:
+  group: daily-prices
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -r requirements.txt
+
+      - name: Tests
+        run: python -m pytest -q
+
+      - name: Refresh game list (picks up new releases)
+        run: python -m steamwait.app_list
+
+      - name: Snapshot prices
+        run: python -m steamwait.snapshot_prices
+
+      - name: Upload to Hugging Face
+        if: always()        # upload whatever we got, even if coverage was low
+        run: python -m steamwait.hf_sync upload

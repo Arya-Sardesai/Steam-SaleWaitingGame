@@ -36,3 +36,14 @@ USER_AGENT = "Steam-SaleWaitingGame (portfolio project; github.com/Arya-Sardesai
 
 # --- Quality gate ---
 MIN_OK_RATE = 0.90   # a run below this is flagged as unhealthy
+
+# --- Step 2: daily price snapshot ---
+PRICE_BATCH_SIZE = 200               # confirmed working in batch_test.py (Nov 23)
+PRICES_DIR = DATA / "prices"         # prices/snapshot_date=YYYY-MM-DD/prices.parquet
+RAW_PRICES_DIR = DATA / "raw" / "prices"
+PRICE_HISTORY_PATH = DATA / "prices" / "price_history.parquet"
+PRICE_RUNS_LOG = STATE_DIR / "price_runs.csv"
+MIN_PRICE_COVERAGE = 0.95            # share of games that must get an answer, or the run fails
+
+# --- Hugging Face dataset (where Actions stores data, since it has no disk between runs) ---
+HF_DATASET_REPO = os.getenv("HF_DATASET_REPO") or "Arya2305/steam-salewaitinggame"

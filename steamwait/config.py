@@ -45,5 +45,18 @@ PRICE_HISTORY_PATH = DATA / "prices" / "price_history.parquet"
 PRICE_RUNS_LOG = STATE_DIR / "price_runs.csv"
 MIN_PRICE_COVERAGE = 0.95            # share of games that must get an answer, or the run fails
 
+# --- Step 3: IsThereAnyDeal price history backfill ---
+ITAD_BASE = "https://api.isthereanydeal.com"
+ITAD_STEAM_SHOP_ID = 61
+ITAD_COUNTRY = "CA"                  # same region as our Steam snapshots
+ITAD_LOOKUP_BATCH = 200              # Steam IDs per lookup request
+ITAD_HISTORY_SINCE = "2010-01-01T00:00:00Z"   # without this, ITAD only returns ~3 recent months
+ITAD_SECONDS_BETWEEN_CALLS = 4.5     # ~67 per 5 min. Our real limit is 100 per 5 min and ITAD
+                                     # asks apps not to max it out, so we stay at ~2/3 of it.
+ITAD_IDS_PATH = STATE_DIR / "itad_ids.parquet"            # appid -> ITAD game id
+ITAD_DONE_LOG = STATE_DIR / "itad_history_done.csv"
+RAW_ITAD_DIR = DATA / "raw" / "itad_history"
+ITAD_LOG_PATH = PARSED_DIR / "itad_price_log.parquet"
+
 # --- Hugging Face dataset (where Actions stores data, since it has no disk between runs) ---
 HF_DATASET_REPO = os.getenv("HF_DATASET_REPO") or "Arya2305/steam-salewaitinggame"

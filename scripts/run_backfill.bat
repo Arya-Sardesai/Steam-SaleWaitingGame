@@ -1,6 +1,8 @@
 @echo off
-REM Task Scheduler runs this. Edit the path on the next line to where your repo lives.
-cd /d C:\path\to\Steam-SaleWaitingGame
+REM Task Scheduler runs this. Calls the venv's python directly (no activate step needed).
+REM -u = unbuffered, so backfill.log updates live instead of in big chunks.
+cd /d C:\Users\aryas\Desktop\Poject\Steam-SaleWaitingGame
 if not exist data\state mkdir data\state
-call .venv\Scripts\activate.bat
-python -m steamwait.fetch_details >> data\state\backfill.log 2>&1
+echo ===== %date% %time% start ===== >> data\state\backfill.log
+.venv\Scripts\python.exe -u -m steamwait.fetch_details >> data\state\backfill.log 2>&1
+echo ===== %date% %time% end (exit %errorlevel%) ===== >> data\state\backfill.log

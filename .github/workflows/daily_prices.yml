@@ -2,10 +2,12 @@ name: Daily price snapshot
 
 on:
   schedule:
+    # GitHub's scheduler sometimes delays or drops runs, so there are two tries a day.
+    # The second one skips itself if the first already uploaded today's snapshot.
     # 18:30 UTC = 10:30am Vancouver (PST), just after Steam sales usually flip at 10am Pacific.
-    # In summer (PDT) this becomes 11:30am, which is still fine.
     - cron: "30 18 * * *"
-  workflow_dispatch:        # "Run workflow" button for manual runs
+    - cron: "17 21 * * *"
+  workflow_dispatch:        # "Run workflow" button. Manual runs always run, even if done.
 
 concurrency:
   group: daily-prices
@@ -20,9 +22,9 @@ jobs:
       HF_TOKEN: ${{ secrets.HF_TOKEN }}
       HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
@@ -30,15 +32,32 @@ jobs:
       - name: Install
         run: python -m pip install -r requirements.txt
 
+      - name: Already done today?
+        id: check
+        run: python -m steamwait.hf_sync exists
+
+      - name: Decide
+        id: go
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ steps.check.outputs.exists }}" != "true" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Today's snapshot already exists, skipping."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Tests
+        if: steps.go.outputs.run == 'true'
         run: python -m pytest -q
 
       - name: Refresh game list (picks up new releases)
+        if: steps.go.outputs.run == 'true'
         run: python -m steamwait.app_list
 
       - name: Snapshot prices
+        if: steps.go.outputs.run == 'true'
         run: python -m steamwait.snapshot_prices
 
       - name: Upload to Hugging Face
-        if: always()        # upload whatever we got, even if coverage was low
+        if: always() && steps.go.outputs.run == 'true'   # upload whatever we got, even if coverage was low
         run: python -m steamwait.hf_sync upload

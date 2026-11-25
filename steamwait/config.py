@@ -51,8 +51,9 @@ ITAD_STEAM_SHOP_ID = 61
 ITAD_COUNTRY = "CA"                  # same region as our Steam snapshots
 ITAD_LOOKUP_BATCH = 200              # Steam IDs per lookup request
 ITAD_HISTORY_SINCE = "2010-01-01T00:00:00Z"   # without this, ITAD only returns ~3 recent months
-ITAD_SECONDS_BETWEEN_CALLS = 4.5     # ~67 per 5 min. Our real limit is 100 per 5 min and ITAD
-                                     # asks apps not to max it out, so we stay at ~2/3 of it.
+ITAD_SECONDS_BETWEEN_CALLS = 0.5     # ~600 per 5 min. Limit is 1000 per 5 min with a verified
+                                     # email (confirmed by ITAD, Nov 2026); ITAD asks apps not to max
+                                     # it out, so we stay at ~60%. Was 4.5 on the unverified 100 limit.
 ITAD_IDS_PATH = STATE_DIR / "itad_ids.parquet"            # appid -> ITAD game id
 ITAD_DONE_LOG = STATE_DIR / "itad_history_done.csv"
 RAW_ITAD_DIR = DATA / "raw" / "itad_history"

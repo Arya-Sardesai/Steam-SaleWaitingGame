@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: fct_sale_events
+    description: >
+      One row per sale. A sale is an unbroken stretch with discount above 0%; mid-sale
+      discount changes stay one sale (deepest cut kept). Built with gaps-and-islands.
+    columns:
+      - name: sale_id
+        data_tests: [unique, not_null]
+      - name: appid
+        data_tests: [not_null]
+      - name: max_cut_percent
+        description: Deepest discount during the sale (1-100).
+        data_tests: [not_null]
+      - name: duration_days
+        description: Days from start to end. Null while the sale is still running.
+      - name: days_since_prev_sale
+        description: Gap since the previous sale ended. The "cooldown" feature.
+      - name: is_left_censored
+        description: >
+          Already on sale the first time we saw this game, so the true start date is
+          unknown. Exclude from anything that uses start_date (timing models, spikes).
+        data_tests: [not_null]
+
+  - name: dim_games
+    description: One row per game with metadata and a summary of its sale behaviour.
+    columns:
+      - name: appid
+        data_tests: [unique, not_null]
+      - name: is_modelable
+        description: Released, for sale, not free, not adult. The population the model predicts for.
+
+  - name: fct_platform_sale_days
+    description: >
+      Sales started per day. Spikes (5x the local median) mark platform-wide events,
+      which lets us find past Summer/Winter Sales and fests from the data itself.
+    columns:
+      - name: start_date
+        data_tests: [unique, not_null]
+
+  - name: int_price_changes
+    description: One timeline of real price changes per game (IsThereAnyDeal history, then our snapshots).

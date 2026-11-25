@@ -1,0 +1,10 @@
+steamwait:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # One local database file, next to the rest of the (gitignored) data.
+      path: "{{ env_var('STEAMWAIT_DATA') }}/warehouse.duckdb"
+      threads: 4
+      settings:
+        TimeZone: "UTC"           # every date in this project is a UTC date

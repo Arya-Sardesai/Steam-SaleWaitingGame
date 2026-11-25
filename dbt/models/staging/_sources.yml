@@ -1,0 +1,23 @@
+version: 2
+
+# Raw files produced by the Python pipelines. dbt reads them in place; nothing is copied.
+sources:
+  - name: raw
+    description: Parquet files written by the steamwait Python scripts (all under data/).
+    tables:
+      - name: steam_prices
+        description: Daily price snapshot for every Steam game (snapshot_prices.py, via Hugging Face).
+        meta:
+          external_location: >-
+            read_parquet('{{ env_var("STEAMWAIT_DATA") }}/prices/snapshot_date=*/prices.parquet',
+                         hive_partitioning = false, union_by_name = true)
+
+      - name: itad_price_log
+        description: Every past Steam price change from IsThereAnyDeal (parse_itad.py).
+        meta:
+          external_location: "read_parquet('{{ env_var(\"STEAMWAIT_DATA\") }}/parsed/itad_price_log.parquet')"
+
+      - name: steam_appdetails
+        description: Store metadata per game, latest fetch only (parse_details.py).
+        meta:
+          external_location: "read_parquet('{{ env_var(\"STEAMWAIT_DATA\") }}/parsed/appdetails.parquet')"

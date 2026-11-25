@@ -1,0 +1,30 @@
+name: steamwait
+version: "1.0.0"
+config-version: 2
+profile: steamwait
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  steamwait:
+    staging:
+      +materialized: view        # cheap: just renames and type fixes on top of the parquet files
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: table       # what the model and the app actually read
+
+seeds:
+  steamwait:
+    steam_events:
+      +column_types:
+        event_name: varchar
+        event_type: varchar
+        start_date: date
+        end_date: date
+        theme: varchar

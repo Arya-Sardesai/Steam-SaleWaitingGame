@@ -1,0 +1,14 @@
+event_name,event_type,start_date,end_date,theme
+Train Fest,fest,2026-07-20,2026-07-27,trains
+Party-Based RPG Fest,fest,2026-09-14,2026-09-21,party-based rpg
+Steam Autumn Sale 2026,seasonal,2026-10-01,2026-10-08,
+Cooking Fest,fest,2026-10-12,2026-10-19,cooking
+Steam Next Fest October 2026,next_fest,2026-10-19,2026-10-26,demos (not a discount event)
+Steam Scream V Fest,fest,2026-10-26,2026-11-02,horror
+Auto Battler RPG Fest,fest,2026-11-16,2026-11-23,auto battler
+Steam Winter Sale 2026,seasonal,2026-12-17,2027-01-04,
+Desktop Companion Fest,fest,2027-01-14,2027-01-18,desktop companion
+Shop Keeper Fest,fest,2027-01-25,2027-02-01,shop keeper
+Sheep Fest,fest,2027-02-04,2027-02-08,sheep
+Steam Spring Sale 2027,seasonal,2027-03-18,2027-03-25,
+Steam Summer Sale 2027,seasonal,2027-06-24,2027-07-08,

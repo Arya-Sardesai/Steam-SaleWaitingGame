@@ -1,0 +1,2 @@
+# Only needed on your PC for the dbt models. Kept separate so the daily GitHub run stays fast.
+dbt-duckdb>=1.11

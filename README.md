@@ -107,6 +107,7 @@ notebooks run in WSL (Ubuntu). The pipeline and dbt run on Windows.
 - **Content filtering:** games carrying Steam's adult content descriptors (IDs 3 and 4) are
   excluded from modelling. The rule was chosen by checking real examples, after confirming that
   mainstream games such as Cyberpunk 2077 and Baldur's Gate 3 carry descriptor 1 but never 3 or 4.
+- LightGBM predicts whether a game goes on sale within 14 days with test average precision 0.80 and ROC AUC 0.92 on 2025–26 data, against 0.52 / 0.73 for the "wait for the next seasonal sale" rule. Logistic regression barely beats the rule, so the patterns are non-linear. SHAP shows the upcoming Steam sale calendar dominates, followed by each game's own discount habit and how long it has already waited.
 
 ## Roadmap
 

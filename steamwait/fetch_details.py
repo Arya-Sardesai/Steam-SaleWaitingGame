@@ -24,6 +24,7 @@ from steamwait import config
 DONE_STATUSES = {"ok", "not_found"}
 
 
+
 # ---------- state ----------
 def latest_universe() -> Path:
     files = sorted(config.UNIVERSE_DIR.glob("appids_*.parquet"))
@@ -102,6 +103,32 @@ def flush(buffer: list[dict]) -> None:
     buffer.clear()
 
 
+# ---------- priority ----------
+def prioritise(queue: pd.Series) -> pd.Series:
+    """Most useful games first, so the demo gets coverage fast.
+
+    1. for sale today AND already have IsThereAnyDeal history -> modelable the moment this lands
+    2. for sale today
+    3. everything else (free, unreleased, delisted)
+    Inside each group: newest app IDs first, since recent games are what people search for.
+    Falls back to app-ID order if the snapshot / ITAD files aren't there.
+    """
+    priced, has_history = set(), set()
+    snaps = sorted(config.PRICES_DIR.glob("snapshot_date=*/prices.parquet"))
+    if snaps:
+        s = pd.read_parquet(snaps[-1], columns=["appid", "status"])
+        priced = set(s.loc[s["status"] == "priced", "appid"])
+    if config.ITAD_DONE_LOG.exists():
+        d = pd.read_csv(config.ITAD_DONE_LOG)
+        has_history = set(d.loc[d["status"] == "ok", "appid"])
+    q = pd.DataFrame({"appid": queue.to_numpy()})
+    q["group"] = 3
+    q.loc[q["appid"].isin(priced), "group"] = 2
+    q.loc[q["appid"].isin(priced) & q["appid"].isin(has_history), "group"] = 1
+    print("Queue by priority group:", q["group"].value_counts().sort_index().to_dict())
+    return q.sort_values(["group", "appid"], ascending=[True, False])["appid"]
+
+
 # ---------- main loop ----------
 def run(limit: int | None, sample: bool, hours: float) -> None:
     universe = pd.read_parquet(latest_universe())
@@ -109,6 +136,8 @@ def run(limit: int | None, sample: bool, hours: float) -> None:
     queue = universe.loc[~universe["appid"].isin(done), "appid"].astype(int)
     if sample:
         queue = queue.sample(frac=1, random_state=42)   # random order, so a pilot isn't all 2004 games
+    else:
+        queue = prioritise(queue)
     queue = queue.tolist()[:limit] if limit else queue.tolist()
 
     print(f"Universe {len(universe):,} | done {len(done):,} | this run {len(queue):,}")

@@ -16,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 os.environ.setdefault("DBT_PROJECT_DIR", str(ROOT / "dbt"))
 os.environ.setdefault("DBT_PROFILES_DIR", str(ROOT / "dbt"))
+os.environ.setdefault("DBT_SEND_ANONYMOUS_USAGE_STATS", "False")
 os.environ.setdefault("STEAMWAIT_DATA", str(ROOT / "data").replace("\\", "/"))
 
 from dbt.cli.main import cli  # noqa: E402  (env vars must be set first)

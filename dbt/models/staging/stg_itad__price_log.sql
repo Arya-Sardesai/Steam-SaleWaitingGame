@@ -16,3 +16,8 @@ select
     currency
 from source
 where price_cents is not null
+  -- Impossible records seen in the oldest (2016) history: a "120% off" sale, and "sales"
+  -- priced ABOVE the regular price. The discount and the prices contradict each other, so
+  -- we can't tell which number is wrong. Drop them rather than guess.
+  and coalesce(cut_percent, 0) between 0 and 100
+  and not (coalesce(cut_percent, 0) > 0 and price_cents >= regular_cents)

@@ -1,0 +1,5 @@
+# For the notebooks on your PC (not needed by the daily GitHub run).
+scikit-learn>=1.6
+lifelines>=0.30
+matplotlib>=3.9
+ipykernel>=6.29

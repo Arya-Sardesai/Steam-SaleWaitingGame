@@ -41,3 +41,16 @@ models:
 
   - name: int_price_changes
     description: One timeline of real price changes per game (IsThereAnyDeal history, then our snapshots).
+
+  - name: fct_sale_gaps
+    description: >
+      Survival dataset. One row per gap between two sales of a game. duration_days runs
+      from a sale's end to the next sale's start; event_observed is false when the next
+      sale hasn't happened yet (right-censored). Features are known at the start of the gap.
+    columns:
+      - name: gap_id
+        data_tests: [unique, not_null]
+      - name: duration_days
+        data_tests: [not_null]
+      - name: event_observed
+        data_tests: [not_null]

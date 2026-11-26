@@ -36,6 +36,9 @@ select
     s.local_median,
     round(s.sales_started / nullif(s.local_median, 0), 1)         as spike_ratio,
     s.sales_started >= 5 * greatest(s.local_median, 1)            as is_spike,
+    -- the big platform-wide events: real seasonal sales were 100x+ the local median
+    s.sales_started >= 30 * greatest(s.local_median, 1)
+        and s.sales_started >= 100                                as is_major_event,
     ev.known_event
 from scored s
 left join events_per_day ev using (start_date)

@@ -169,7 +169,7 @@ def prioritise(ids: pd.DataFrame) -> pd.DataFrame:
     return q.sample(frac=1, random_state=42).sort_values("tier", kind="stable")
 
 
-def history(limit: int | None, hours: float, max_tier: int) -> None:
+def history(limit: int | None, hours: float, max_tier: int, appids: list[int] | None = None) -> None:
     if not config.ITAD_IDS_PATH.exists():
         sys.exit("Run the lookup stage first: python -m steamwait.itad_history lookup")
     ids = pd.read_parquet(config.ITAD_IDS_PATH).dropna(subset=["itad_id"])
@@ -177,8 +177,14 @@ def history(limit: int | None, hours: float, max_tier: int) -> None:
     if config.ITAD_DONE_LOG.exists():
         d = pd.read_csv(config.ITAD_DONE_LOG)
         done = set(d.loc[d["status"].isin(DONE_STATUSES), "appid"].astype(int))
-    queue = prioritise(ids[~ids["appid"].isin(done)])
-    queue = queue[queue["tier"] <= max_tier]
+    if appids:   # on demand: fetch these now, even if done before or in a skipped tier
+        queue = prioritise(ids[ids["appid"].isin(appids)])
+        missing = sorted(set(appids) - set(queue["appid"]))
+        if missing:
+            print(f"No IsThereAnyDeal match for {missing} (run the lookup stage first, or ITAD doesn't list it)")
+    else:
+        queue = prioritise(ids[~ids["appid"].isin(done)])
+        queue = queue[queue["tier"] <= max_tier]
     if limit:
         queue = queue.head(limit)
     print(f"Matched games {len(ids):,} | done {len(done):,} | this run {len(queue):,}")
@@ -230,13 +236,14 @@ def main() -> None:
     p.add_argument("--hours", type=float, default=config.MAX_RUN_HOURS)
     p.add_argument("--max-tier", type=int, default=1,
                    help="history: skip tiers above this (default 1 skips never-priced games)")
+    p.add_argument("--appids", type=int, nargs="+", help="history: fetch just these games now")
     a = p.parse_args()
     if a.stage == "probe":
         probe()
     elif a.stage == "lookup":
         lookup()
     else:
-        history(a.limit, a.hours, a.max_tier)
+        history(a.limit, a.hours, a.max_tier, a.appids)
 
 
 if __name__ == "__main__":

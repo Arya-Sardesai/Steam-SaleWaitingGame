@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sale Waiting Game: buy now or wait for the Steam sale?</title>
+  <meta name="description" content="Search a Steam game and see how likely it is to go on sale soon, how deep the cut usually goes, and what you'd probably pay.">
+  <link rel="preload" href="assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23D97735'/><text x='16' y='24' font-family='Arial' font-weight='900' font-size='22' fill='%231C1D1B' text-anchor='middle'>%25</text></svg>">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#/"><span class="logo__mark">%</span><span class="logo__word">Sale Waiting Game</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="#/" data-nav="discover">Discover</a>
+        <a href="#/browse" data-nav="browse">Browse</a>
+        <a href="#/watchlist" data-nav="watchlist">Watchlist<span class="nav__count" id="watch-count"></span></a>
+        <a href="#/data" data-nav="data">How it works</a>
+      </nav>
+      <span class="asof" id="asof"></span>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"><p class="loading">Loading…</p></main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div><strong>Sale Waiting Game</strong> is a project by <a href="https://arya-sardesai.netlify.app">Arya Sardesai</a>. Not affiliated with Valve. Game art © its publishers, via Steam.</div>
+      <div>Prices in CAD. Forecasts are probabilities, not promises. Price history from <a href="https://isthereanydeal.com">IsThereAnyDeal</a>. <a href="https://github.com/Arya-Sardesai/Steam-SaleWaitingGame">Source on GitHub</a>.</div>
+    </div>
+  </footer>
+
+  <div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>

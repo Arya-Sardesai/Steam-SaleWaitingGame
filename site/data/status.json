@@ -1,0 +1,27 @@
+{
+ "generated_at": "2026-11-26T20:53+00:00",
+ "price_snapshot_date": "2026-11-26",
+ "games_tracked": 202482,
+ "games_with_metadata": 58489,
+ "price_changes": 1740862,
+ "sale_events": 813723,
+ "history_since": "2016-02-20",
+ "predictions": {
+  "forecast": 20872,
+  "on_sale": 5841,
+  "no_history": 21239
+ },
+ "backfills": {
+  "metadata_done": 58671,
+  "history_done": 44545
+ },
+ "dbt": {
+  "finished_at": "2026-11-26T20:50:50.196988Z",
+  "elapsed_seconds": 2.8,
+  "results": {
+   "pass": 26,
+   "success": 9,
+   "warn": 1
+  }
+ }
+}

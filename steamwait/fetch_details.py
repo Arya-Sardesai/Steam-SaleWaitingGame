@@ -130,11 +130,13 @@ def prioritise(queue: pd.Series) -> pd.Series:
 
 
 # ---------- main loop ----------
-def run(limit: int | None, sample: bool, hours: float) -> None:
+def run(limit: int | None, sample: bool, hours: float, appids: list[int] | None = None) -> None:
     universe = pd.read_parquet(latest_universe())
     done = load_done()
     queue = universe.loc[~universe["appid"].isin(done), "appid"].astype(int)
-    if sample:
+    if appids:
+        queue = pd.Series(appids, dtype=int)             # on demand: fetch these now, even if done before
+    elif sample:
         queue = queue.sample(frac=1, random_state=42)   # random order, so a pilot isn't all 2004 games
     else:
         queue = prioritise(queue)
@@ -194,8 +196,9 @@ def main() -> None:
     p.add_argument("--limit", type=int, default=None, help="max games this run (pilot: 500)")
     p.add_argument("--sample", action="store_true", help="random order instead of appid order")
     p.add_argument("--hours", type=float, default=config.MAX_RUN_HOURS)
+    p.add_argument("--appids", type=int, nargs="+", help="fetch just these games now, e.g. --appids 1478500")
     a = p.parse_args()
-    run(a.limit, a.sample, a.hours)
+    run(a.limit, a.sample, a.hours, a.appids)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,205 @@
+{
+ "as_of": "2026-11-26",
+ "timing_7d": {
+  "test_period": "2025-11-26 to 2026-11-26",
+  "test_rows": 336604,
+  "average_precision": 0.716,
+  "roc_auc": 0.931,
+  "seasonal_rule_average_precision": 0.389,
+  "seasonal_rule_roc_auc": 0.71,
+  "positive_rate": 0.104,
+  "reliability": [
+   {
+    "predicted": 0.02,
+    "actual": 0.02,
+    "n": 243819
+   },
+   {
+    "predicted": 0.142,
+    "actual": 0.139,
+    "n": 27646
+   },
+   {
+    "predicted": 0.245,
+    "actual": 0.239,
+    "n": 16120
+   },
+   {
+    "predicted": 0.347,
+    "actual": 0.357,
+    "n": 11642
+   },
+   {
+    "predicted": 0.446,
+    "actual": 0.455,
+    "n": 7379
+   },
+   {
+    "predicted": 0.55,
+    "actual": 0.536,
+    "n": 5366
+   },
+   {
+    "predicted": 0.647,
+    "actual": 0.604,
+    "n": 4766
+   },
+   {
+    "predicted": 0.747,
+    "actual": 0.742,
+    "n": 3172
+   },
+   {
+    "predicted": 0.859,
+    "actual": 0.874,
+    "n": 5255
+   },
+   {
+    "predicted": 0.935,
+    "actual": 0.957,
+    "n": 11439
+   }
+  ]
+ },
+ "timing_14d": {
+  "test_period": "2025-11-26 to 2026-11-26",
+  "test_rows": 330535,
+  "average_precision": 0.799,
+  "roc_auc": 0.929,
+  "seasonal_rule_average_precision": 0.485,
+  "seasonal_rule_roc_auc": 0.737,
+  "positive_rate": 0.204,
+  "reliability": [
+   {
+    "predicted": 0.028,
+    "actual": 0.024,
+    "n": 179236
+   },
+   {
+    "predicted": 0.144,
+    "actual": 0.159,
+    "n": 34803
+   },
+   {
+    "predicted": 0.245,
+    "actual": 0.246,
+    "n": 18638
+   },
+   {
+    "predicted": 0.349,
+    "actual": 0.353,
+    "n": 13915
+   },
+   {
+    "predicted": 0.45,
+    "actual": 0.441,
+    "n": 13465
+   },
+   {
+    "predicted": 0.55,
+    "actual": 0.536,
+    "n": 13546
+   },
+   {
+    "predicted": 0.648,
+    "actual": 0.635,
+    "n": 10043
+   },
+   {
+    "predicted": 0.75,
+    "actual": 0.714,
+    "n": 8876
+   },
+   {
+    "predicted": 0.857,
+    "actual": 0.829,
+    "n": 10119
+   },
+   {
+    "predicted": 0.943,
+    "actual": 0.947,
+    "n": 27894
+   }
+  ]
+ },
+ "timing_30d": {
+  "test_period": "2025-11-26 to 2026-11-26",
+  "test_rows": 312366,
+  "average_precision": 0.856,
+  "roc_auc": 0.878,
+  "seasonal_rule_average_precision": 0.623,
+  "seasonal_rule_roc_auc": 0.699,
+  "positive_rate": 0.446,
+  "reliability": [
+   {
+    "predicted": 0.066,
+    "actual": 0.043,
+    "n": 24786
+   },
+   {
+    "predicted": 0.144,
+    "actual": 0.1,
+    "n": 43750
+   },
+   {
+    "predicted": 0.246,
+    "actual": 0.198,
+    "n": 24424
+   },
+   {
+    "predicted": 0.349,
+    "actual": 0.304,
+    "n": 19336
+   },
+   {
+    "predicted": 0.45,
+    "actual": 0.404,
+    "n": 20196
+   },
+   {
+    "predicted": 0.55,
+    "actual": 0.491,
+    "n": 21692
+   },
+   {
+    "predicted": 0.652,
+    "actual": 0.592,
+    "n": 25938
+   },
+   {
+    "predicted": 0.752,
+    "actual": 0.708,
+    "n": 36166
+   },
+   {
+    "predicted": 0.845,
+    "actual": 0.81,
+    "n": 33994
+   },
+   {
+    "predicted": 0.955,
+    "actual": 0.95,
+    "n": 62084
+   }
+  ]
+ },
+ "discount": {
+  "calibration_period": "2025-11-26 to 2026-11-26",
+  "calibration_sales": 92126,
+  "mae_points": 6.05,
+  "baseline_same_as_last_mae_points": 6.21,
+  "raw_range_coverage": 0.804,
+  "conformal_margin_points": 0.0,
+  "widened_range_coverage": 0.804
+ },
+ "top_drivers": {
+  "days_to_next_major_event": 1.808,
+  "after_sale_number": 0.69,
+  "days_waited": 0.592,
+  "prev_gap_days": 0.458,
+  "game_age_years": 0.205,
+  "check_month": 0.143,
+  "regular_dollars": 0.103,
+  "days_since_major_event": 0.072
+ }
+}

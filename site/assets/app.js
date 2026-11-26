@@ -652,7 +652,7 @@ async function dataPage() {
       <section class="section">
         <div class="sec-head"><h2 class="h2">The pipeline</h2><span class="label">raw API → this page</span></div>
         <div class="pipeline" style="margin-top:14px">
-          <div class="pipe"><span class="pipe__n">01 Collect</span><h4>Every price, twice a day</h4><p>Steam's store API, 200 games per call, on a GitHub Actions schedule. Ten years of history backfilled from IsThereAnyDeal.</p><p class="pipe__tech">Python · GitHub Actions</p></div>
+          <div class="pipe"><span class="pipe__n">01 Collect</span><h4>Every price, every day</h4><p>Steam's store API, 200 games per call, on a daily GitHub Actions schedule with an automatic retry. Ten years of history backfilled from IsThereAnyDeal.</p><p class="pipe__tech">Python · GitHub Actions</p></div>
           <div class="pipe"><span class="pipe__n">02 Store</span><h4>Only what changed</h4><p>A row is written only when a price moves. Parquet files, versioned on Hugging Face.</p><p class="pipe__tech">Parquet · HF Datasets</p></div>
           <div class="pipe"><span class="pipe__n">03 Model the data</span><h4>A tested warehouse</h4><p>Staging, intermediate and mart layers turn raw logs into sales, gaps between sales, and Steam's event calendar.</p><p class="pipe__tech">dbt · DuckDB · ${res.pass ?? 27} tests</p></div>
           <div class="pipe"><span class="pipe__n">04 Predict</span><h4>When, and how deep</h4><p>Gradient-boosted classifiers at 7, 14 and 30 days. Quantile models with conformal calibration for the discount range.</p><p class="pipe__tech">LightGBM · SHAP · CQR</p></div>
